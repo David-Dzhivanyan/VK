@@ -5,7 +5,7 @@ import View from './view.js';
     try {
         const header = document.querySelector('#header');
         await Model.login(51521661, 2|8192);
-        const [me] = await Model.getUser({name_case: 'gen'});
+        const [me] = await Model.getUser({name_case: ""});
 
         header.innerHTML = View.render('header', me);
     } catch (e) {
