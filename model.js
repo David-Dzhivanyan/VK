@@ -12,7 +12,7 @@ export default{
         });
     },
     callApi(method,params){
-        params.v = params.v || '5.81';
+        params.v = params.v || '5.103';
 
         return new Promise((resolve, reject) =>{
             VK.api(method, params, response =>{
