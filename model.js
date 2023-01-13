@@ -26,5 +26,11 @@ export default{
     },
     getUser(params = {}){
         return this.callApi('users.get', params);
+    },
+    getFriends(params = {}){
+        return this.callApi('friends.get', params);
+    },
+    getNews(params = {}){
+        return this.callApi('wall.get', params);
     }
 };
