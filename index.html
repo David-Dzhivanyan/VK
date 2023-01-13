@@ -20,8 +20,54 @@
         <div id = "results"></div>
     </div>
     <script src="entry.js" type="module"></script>
+    
+    <style>
+        .flex{
+            display: flex;
+            flex-wrap: wrap;
+        }
+    </style>
+
     <script id="headerTemplate" type="text/template">
         <h1>{{ first_name }} {{ last_name }}</h1>
+    </script>
+
+    <script id="friendsTemplate" type="text/template">
+        <div>
+            <div class="flex">
+                {{#each list}}
+                <div class="friend">
+                    <a href="#friends/{{id}}" class="img-circle"> <img src="{{ photo_100 }}" class="img-circle"></img></a>
+                    <div>{{ first_name }} <br> {{ last_name }}</div>
+                    <div>{{ formatBDay bdate }}</div>
+                </div>
+                {{/each}}
+            </div>
+        </div>
+    </script>
+
+    <script id="friendTemplate" type="text/template">
+        <div>
+            <img src="{{ photo_100 }}" class="img-circle"></img>
+            <div>{{ first_name }} {{ last_name }}</div>
+            <div>{{ country.title }} {{ city.title }}</div>
+            {{#if bdate}}
+            <div>День рождения: {{ formatBDay bdate }}</div>
+            {{/if}}
+        </div>
+    </script>
+
+    <script id="newsTemplate" type="text/template">
+            <div class="news">
+                {{#each list}}
+                {{#if text}}
+                <div class="post">
+                    <b>{{ formatDay date }}</b>
+                    <div class="post-text">{{ text }}</div>
+                </div>
+                {{/if}}
+                {{/each}}
+            </div>
     </script>
 </body>
 </html>

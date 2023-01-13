@@ -1,3 +1,22 @@
+Handlebars.registerHelper('formatTime', time =>{
+    return time = 'пидор';
+});
+
+Handlebars.registerHelper('formatBDay', bday =>{
+    const months = [
+        'января','февраля','марта','апреля',
+        'мая','июня','июля','августа',
+        'сентября','октября','ноября','декабря',
+    ];
+
+    const [day, month] = (bday || '').split('.');
+    
+    return [day, months[month - 1]].join(' ');
+});
+
+Handlebars.registerHelper('formatDay', time =>{
+    return time = 'пидор';
+});
 import Model from './model.js';
 import View from './view.js';
 import Router from './router.js';
