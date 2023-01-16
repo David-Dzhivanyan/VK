@@ -8,6 +8,6 @@ export default {
         items = newItems;
     },
     render(){
-        resultsNode.innerHTML = View.render('news', { list: items });
+        resultsNode.innerHTML = View.render('wall', { list: items });
     }
 }

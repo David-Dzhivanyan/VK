@@ -61,6 +61,16 @@ Handlebars.registerHelper('formatDay', timestamp =>{
     time = yyyy + '-' + mm + '-' + dd + ', ' + h + ':' + min + ' ' + ampm;
     return time;
 });
+
+Handlebars.registerHelper('formatId', id =>{
+    if(id < 0){
+        return 'https://vk.com/public' + id * -1;
+    }
+    else{
+        return 'https://vk.com/id' + id;
+    }
+});
+
 import Model from './model.js';
 import View from './view.js';
 import Router from './router.js';

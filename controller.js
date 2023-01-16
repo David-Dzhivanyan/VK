@@ -1,19 +1,19 @@
 import Model from "./model.js";
 import friendPage from "./pages/friend.js";
 import friendsPage from "./pages/friends.js";
-import newsPage from "./pages/news.js";
+import wallPage from "./pages/wall.js";
 
 
 export default{
     async friendsRoute(params){
         if(params.id){
             const [friend] = await Model.getUser({user_ids: params.id, fields: 'photo_100, city, country, bdate'})
-            const news = await Model.getNews({owner_id: params.id, filter:'owner'});
+            const wall = await Model.getWall({owner_id: params.id, filter:'owner'});
 
             friendPage.setData(friend);
             friendPage.render();
-            newsPage.setData(news.items);
-            newsPage.render();
+            wallPage.setData(wall.items);
+            wallPage.render();
         } else {
             const friends = await Model.getFriends({fields: 'photo_100, bdate'});
             let da = document.querySelector('#results-2');
@@ -22,13 +22,13 @@ export default{
             friendsPage.render();
         }
     },
-    async newsRoute(){
+    async wallRoute(){
         const [me] = await Model.getUser({ fields: 'photo_100, city, country, bdate'})
-        const news = await Model.getNews();
+        const wall = await Model.getWall();
 
         friendPage.setData(me);
         friendPage.render();
-        newsPage.setData(news.items);
-        newsPage.render();
+        wallPage.setData(wall.items);
+        wallPage.render();
     }
 }

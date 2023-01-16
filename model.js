@@ -31,6 +31,9 @@ export default{
         return this.callApi('friends.get', params);
     },
     getNews(params = {}){
+        return this.callApi('newsfeed.get', params);
+    },
+    getWall(params = {}){
         return this.callApi('wall.get', params);
     }
 };

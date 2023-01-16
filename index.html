@@ -13,7 +13,7 @@
         <div id="header"></div>
 
         <div class="btn-group">
-            <a href="#news" class="btn btn-default" data-role="nav-news">Моя страница</a>
+            <a href="#wall" class="btn btn-default" data-role="nav-wall">Моя страница</a>
             <a href="#friends" class="btn btn-default" data-role="nav-friends">Друзья</a>
         </div>
         <hr>
@@ -58,11 +58,24 @@
         </div>
     </script>
 
-    <script id="newsTemplate" type="text/template">
-            <div class="news">
+    <script id="wallTemplate" type="text/template">
+            <div class="wall">
                 {{#each list}}
                 <div class="post">
                     <b>{{ formatDay date }}</b>
+                    {{#if copy_history}}
+                    <br>
+                    <b>Запись от <a href="{{ formatId copy_history.0.from_id }}">{{ formatId copy_history.0.from_id }}</a></b>
+                    <div class="post-text">{{ copy_history.0.text }}</div>
+                    {{#if copy_history.0.attachments.0.photo}}
+                    <img src="{{ copy_history.0.attachments.0.photo.sizes.3.url }}" class="img-circle"></img>
+                    {{else if copy_history.0.attachments.0.link}}
+                    <a href="{{ copy_history.0.attachments.0.link.url }}">{{ copy_history.0.attachments.0.link.url }}</a>
+                    {{else if copy_history.0.attachments.0.video}}
+                    <a href="https://vk.com/video{{ copy_history.0.attachments.0.video.owner_id }}_{{ copy_history.0.attachments.0.video.id }}">https://vk.com/video{{ copy_history.0.attachments.0.video.owner_id }}_{{ copy_history.0.attachments.0.video.id }}</a>
+
+                    {{/if}}
+                    {{else}}
                     <div class="post-text">{{ text }}</div>
                     {{#if attachments.0.photo}}
                     <img src="{{ attachments.0.photo.sizes.3.url }}" class="img-circle"></img>
@@ -70,6 +83,7 @@
                     <a href="{{ attachments.0.link.url }}">{{ attachments.0.link.url }}</a>
                     {{else if attachments.0.video}}
                     <a href="https://vk.com/video{{ attachments.0.video.owner_id }}_{{ attachments.0.video.id }}">https://vk.com/video{{ attachments.0.video.owner_id }}_{{ attachments.0.video.id }}</a>
+                    {{/if}}
                     {{/if}}
                 </div>
                 {{/each}}
