@@ -13,11 +13,12 @@
         <div id="header"></div>
 
         <div class="btn-group">
+            <a href="#news" class="btn btn-default" data-role="nav-news">Моя страница</a>
             <a href="#friends" class="btn btn-default" data-role="nav-friends">Друзья</a>
-            <a href="#news" class="btn btn-default" data-role="nav-news">Новости</a>
         </div>
         <hr>
         <div id = "results"></div>
+        <div id = "results-2"></div>
     </div>
     <script src="entry.js" type="module"></script>
     
@@ -60,12 +61,17 @@
     <script id="newsTemplate" type="text/template">
             <div class="news">
                 {{#each list}}
-                {{#if text}}
                 <div class="post">
                     <b>{{ formatDay date }}</b>
                     <div class="post-text">{{ text }}</div>
+                    {{#if attachments.0.photo}}
+                    <img src="{{ attachments.0.photo.sizes.3.url }}" class="img-circle"></img>
+                    {{else if attachments.0.link}}
+                    <a href="{{ attachments.0.link.url }}">{{ attachments.0.link.url }}</a>
+                    {{else if attachments.0.video}}
+                    <a href="https://vk.com/video{{ attachments.0.video.owner_id }}_{{ attachments.0.video.id }}">https://vk.com/video{{ attachments.0.video.owner_id }}_{{ attachments.0.video.id }}</a>
+                    {{/if}}
                 </div>
-                {{/if}}
                 {{/each}}
             </div>
     </script>
