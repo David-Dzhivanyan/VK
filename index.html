@@ -5,42 +5,36 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>vk-test</title>
+    <link rel="stylesheet" href="style.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.5/handlebars.min.js"></script>
     <script src="https://vk.com/js/api/openapi.js" type="text/javascript"></script>
 </head>
 <body>
-    <div class="container">
-        <div id="header"></div>
-
-        <div class="btn-group">
-            <a href="#wall" class="btn btn-default" data-role="nav-wall">Моя страница</a>
-            <a href="#friends" class="btn btn-default" data-role="nav-friends">Друзья</a>
+    <div class="container-wrapper">
+        <div id="header">MozlieVk</div>
+        <div class="container">
+            <div class="btn-group">
+                <a class="nav" href="#wall">Моя страница</a>
+                <a class="nav" href="#friends">Друзья</a>
+                <a class="nav" href="#news">Новости</a>
+            </div>
+            <div class="result-wrapper">
+                <div id = "results"></div>
+                <div id = "results-2"></div>
+            </div>
         </div>
-        <hr>
-        <div id = "results"></div>
-        <div id = "results-2"></div>
     </div>
     <script src="entry.js" type="module"></script>
-    
-    <style>
-        .flex{
-            display: flex;
-            flex-wrap: wrap;
-        }
-    </style>
-
-    <script id="headerTemplate" type="text/template">
-        <h1>{{ first_name }} {{ last_name }}</h1>
-    </script>
 
     <script id="friendsTemplate" type="text/template">
         <div>
             <div class="flex">
                 {{#each list}}
                 <div class="friend">
-                    <a href="#friends/{{id}}" class="img-circle"> <img src="{{ photo_100 }}" class="img-circle"></img></a>
+                    <a href="#friends/{{id}}" class="img-circle"> <img src="{{ photo_100 }}" class="img-circle"></img>
                     <div>{{ first_name }} <br> {{ last_name }}</div>
                     <div>{{ formatBDay bdate }}</div>
+                    </a>
                 </div>
                 {{/each}}
             </div>
@@ -49,7 +43,7 @@
 
     <script id="friendTemplate" type="text/template">
         <div>
-            <img src="{{ photo_100 }}" class="img-circle"></img>
+            <img src="{{ photo_100 }}" class=""></img>
             <div>{{ first_name }} {{ last_name }}</div>
             <div>{{ country.title }} {{ city.title }}</div>
             {{#if bdate}}
@@ -62,13 +56,14 @@
             <div class="wall">
                 {{#each list}}
                 <div class="post">
-                    <b>{{ formatDay date }}</b>
                     {{#if copy_history}}
-                    <br>
-                    <b>Запись от <a href="{{ formatId copy_history.0.from_id }}">{{ formatId copy_history.0.from_id }}</a></b>
+                    <div class="post-header">
+                        <span class="post-author">Запись от <a href="{{ formatId copy_history.0.from_id }}">{{ formatId copy_history.0.from_id }}</a></span>
+                        <span class="post-date">{{ formatDay date }}</span>
+                    </div>
                     <div class="post-text">{{ copy_history.0.text }}</div>
                     {{#if copy_history.0.attachments.0.photo}}
-                    <img src="{{ copy_history.0.attachments.0.photo.sizes.3.url }}" class="img-circle"></img>
+                    <img src="{{ lastSize copy_history.0.attachments }}" class="post-img"></img>
                     {{else if copy_history.0.attachments.0.link}}
                     <a href="{{ copy_history.0.attachments.0.link.url }}">{{ copy_history.0.attachments.0.link.url }}</a>
                     {{else if copy_history.0.attachments.0.video}}
@@ -76,11 +71,14 @@
 
                     {{/if}}
                     {{else}}
+                    <div class="post-header">
+                        <span class="post-date">{{ formatDay date }}</span>
+                    </div>
                     <div class="post-text">{{ text }}</div>
                     {{#if attachments.0.photo}}
-                    <img src="{{ attachments.0.photo.sizes.3.url }}" class="img-circle"></img>
+                    <img src="{{ lastSize attachments }}" class="post-img"></img>
                     {{else if attachments.0.link}}
-                    <a href="{{ attachments.0.link.url }}">{{ attachments.0.link.url }}</a>
+                    <a class="link" href="{{ attachments.0.link.url }}">{{ attachments.0.link.url }}</a>
                     {{else if attachments.0.video}}
                     <a href="https://vk.com/video{{ attachments.0.video.owner_id }}_{{ attachments.0.video.id }}">https://vk.com/video{{ attachments.0.video.owner_id }}_{{ attachments.0.video.id }}</a>
                     {{/if}}
@@ -88,6 +86,49 @@
                 </div>
                 {{/each}}
             </div>
+    </script>
+
+    <script id="newsTemplate" type="text/template">
+        <div class="wall">
+            {{#each list}}
+                {{#if copy_history}}
+                <div class="post">
+                    <div class="post-header">
+                        <span class="post-author">Запись от <a href="{{ formatId copy_history.0.from_id }}">{{ formatId copy_history.0.from_id }}</a></span>
+                        <span class="post-date">{{ formatDay date }}</span>
+                    </div>
+                    <div class="post-text">{{ copy_history.0.text }}</div>
+                    {{#if copy_history.0.attachments.0.photo}}
+                    <img src="{{ lastSize copy_history.0.attachments }}" class="post-img"></img>
+                    {{else if copy_history.0.attachments.0.link}}
+                    <a href="{{ copy_history.0.attachments.0.link.url }}">{{ copy_history.0.attachments.0.link.url }}</a>
+                    {{else if copy_history.0.attachments.0.video}}
+                    <a href="https://vk.com/video{{ copy_history.0.attachments.0.video.owner_id }}_{{ copy_history.0.attachments.0.video.id }}">
+                        https://vk.com/video{{ copy_history.0.attachments.0.video.owner_id }}_{{ copy_history.0.attachments.0.video.id }}
+                    </a>
+                </div>
+                {{/if}}
+                {{else if attachments}}
+                <div class="post">
+                    <div class="post-header">
+                        <span class="post-author">Запись от <a href="{{ formatId owner_id }}">{{ formatId owner_id }}</a></span>
+                        <span class="post-date">{{ formatDay date }}</span>
+                    </div>
+                    <div class="post-text">{{ text }}</div>
+                    {{#if attachments.0.photo}}
+                    <img src="{{ lastSize attachments }}" class="post-img"></img>
+                    {{else if attachments.0.link}}
+                    <a href="{{ attachments.0.link.url }}">{{ attachments.0.link.url }}</a>
+                    {{else if attachments.0.video}}
+                    <a href="https://vk.com/video{{ attachments.0.video.owner_id }}_{{ attachments.0.video.id }}">https://vk.com/video{{ attachments.0.video.owner_id }}_{{ attachments.0.video.id }}</a>
+                    {{else if text}}
+                    <b>{{ formatDay date }}</b>
+                    <div class="post-text">{{ text }}</div>
+                    {{/if}}
+                </div>
+                {{/if}}
+            {{/each}}
+        </div>
     </script>
 </body>
 </html>
