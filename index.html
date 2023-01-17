@@ -49,39 +49,63 @@
             {{#if bdate}}
             <div>День рождения: {{ formatBDay bdate }}</div>
             {{/if}}
+            {{#if status}}
+            <b>{{status}}</b>
+            {{/if}}
+        </div>
+    </script>
+
+    <script id="publicTemplate" type="text/template">
+        <div>
+            <img src="{{ 0.photo_100 }}" class=""></img>
+            <div class="public-name">{{ 0.name }}</div>
         </div>
     </script>
 
     <script id="wallTemplate" type="text/template">
             <div class="wall">
                 {{#each list}}
-                <div class="post">
                     {{#if copy_history}}
-                    <div class="post-header">
-                        <span class="post-author">Запись от <a href="{{ formatId copy_history.0.from_id }}">{{ formatId copy_history.0.from_id }}</a></span>
-                        <span class="post-date">{{ formatDay date }}</span>
+                    <div class="post">
+                        <div class="post-header">
+                            <span class="post-author">Запись от <a href="{{ urlHelper copy_history.0.from_id }}">{{ formatId copy_history.0.from_id }}</a></span>
+                            <span class="post-date">{{ formatDay date }}</span>
+                        </div>
+                        <div class="post-text">{{ copy_history.0.text }}</div>
+                        {{#if copy_history.0.attachments.0.photo}}
+                        <img src="{{ lastSize copy_history.0.attachments }}" class="post-img"></img>
+                        {{else if copy_history.0.attachments.0.link}}
+                        <a class="post-text post-link" href="{{ copy_history.0.attachments.0.link.url }}">{{ copy_history.0.attachments.0.link.url }}</a>
+                        {{else if copy_history.0.attachments.0.video}}
+                        <a class="post-text post-link" href="https://vk.com/video{{ copy_history.0.attachments.0.video.owner_id }}_{{ copy_history.0.attachments.0.video.id }}">
+                            https://vk.com/video{{ copy_history.0.attachments.0.video.owner_id }}_{{ copy_history.0.attachments.0.video.id }}
+                        </a>
+                        {{else if copy_history.0.attachments.0.audio}}
+                        <b>{{copy_history.0.attachments.0.audio.artist}}</b>
+                        <span>{{copy_history.0.attachments.0.audio.title}}</span>
+                        <a class="post-link" href="{{copy_history.0.attachments.0.audio.url}}">{{copy_history.0.attachments.0.audio.url}}</a>
+                        {{/if}}
                     </div>
-                    <div class="post-text">{{ copy_history.0.text }}</div>
-                    {{#if copy_history.0.attachments.0.photo}}
-                    <img src="{{ lastSize copy_history.0.attachments }}" class="post-img"></img>
-                    {{else if copy_history.0.attachments.0.link}}
-                    <a href="{{ copy_history.0.attachments.0.link.url }}">{{ copy_history.0.attachments.0.link.url }}</a>
-                    {{else if copy_history.0.attachments.0.video}}
-                    <a href="https://vk.com/video{{ copy_history.0.attachments.0.video.owner_id }}_{{ copy_history.0.attachments.0.video.id }}">https://vk.com/video{{ copy_history.0.attachments.0.video.owner_id }}_{{ copy_history.0.attachments.0.video.id }}</a>
-
-                    {{/if}}
                     {{else}}
-                    <div class="post-header">
-                        <span class="post-date">{{ formatDay date }}</span>
+                    <div class="post">
+                        <div class="post-header">
+                            <span class="post-date">{{ formatDay date }}</span>
+                        </div>
+                        <div class="post-text">{{ text }}</div>
+                        {{#if attachments.0.photo}}
+                        <img src="{{ lastSize attachments }}" class="post-img"></img>
+                        {{else if attachments.0.link}}
+                        <a class="post-text post-link" class="link" href="{{ attachments.0.link.url }}">{{ attachments.0.link.url }}</a>
+                        {{else if attachments.0.video}}
+                        <a class="post-text post-link" href="https://vk.com/video{{ attachments.0.video.owner_id }}_{{ attachments.0.video.id }}">
+                            https://vk.com/video{{ attachments.0.video.owner_id }}_{{ attachments.0.video.id }}
+                        </a>
+                        {{else if attachments.0.audio}}
+                        <b>{{attachments.0.audio.artist}}</b>
+                        <span>{{attachments.0.audio.title}}</span>
+                        <a class="post-link" href="{{attachments.0.audio.url}}">{{attachments.0.audio.url}}</a>
+                        {{/if}}
                     </div>
-                    <div class="post-text">{{ text }}</div>
-                    {{#if attachments.0.photo}}
-                    <img src="{{ lastSize attachments }}" class="post-img"></img>
-                    {{else if attachments.0.link}}
-                    <a class="link" href="{{ attachments.0.link.url }}">{{ attachments.0.link.url }}</a>
-                    {{else if attachments.0.video}}
-                    <a href="https://vk.com/video{{ attachments.0.video.owner_id }}_{{ attachments.0.video.id }}">https://vk.com/video{{ attachments.0.video.owner_id }}_{{ attachments.0.video.id }}</a>
-                    {{/if}}
                     {{/if}}
                 </div>
                 {{/each}}
@@ -89,41 +113,48 @@
     </script>
 
     <script id="newsTemplate" type="text/template">
-        <div class="wall">
+        <div class="news">
             {{#each list}}
                 {{#if copy_history}}
                 <div class="post">
                     <div class="post-header">
-                        <span class="post-author">Запись от <a href="{{ formatId copy_history.0.from_id }}">{{ formatId copy_history.0.from_id }}</a></span>
+                        <span class="post-author">Запись от <a href="{{ urlHelper copy_history.0.from_id }}">{{ formatId copy_history.0.from_id }}</a></span>
                         <span class="post-date">{{ formatDay date }}</span>
                     </div>
                     <div class="post-text">{{ copy_history.0.text }}</div>
                     {{#if copy_history.0.attachments.0.photo}}
                     <img src="{{ lastSize copy_history.0.attachments }}" class="post-img"></img>
                     {{else if copy_history.0.attachments.0.link}}
-                    <a href="{{ copy_history.0.attachments.0.link.url }}">{{ copy_history.0.attachments.0.link.url }}</a>
+                    <a class="post-text post-link" href="{{ copy_history.0.attachments.0.link.url }}">{{ copy_history.0.attachments.0.link.url }}</a>
                     {{else if copy_history.0.attachments.0.video}}
-                    <a href="https://vk.com/video{{ copy_history.0.attachments.0.video.owner_id }}_{{ copy_history.0.attachments.0.video.id }}">
+                    <a class="post-text post-link" href="https://vk.com/video{{ copy_history.0.attachments.0.video.owner_id }}_{{ copy_history.0.attachments.0.video.id }}">
                         https://vk.com/video{{ copy_history.0.attachments.0.video.owner_id }}_{{ copy_history.0.attachments.0.video.id }}
                     </a>
+                    {{else if copy_history.0.attachments.0.audio}}
+                    <b>{{copy_history.0.attachments.0.audio.artist}}</b>
+                    <span>{{copy_history.0.attachments.0.audio.title}}</span>
+                    <a class="post-link" href="{{copy_history.0.attachments.0.audio.url}}">{{copy_history.0.attachments.0.audio.url}}</a>
+                    {{/if}}
                 </div>
-                {{/if}}
-                {{else if attachments}}
+                {{else}}
                 <div class="post">
                     <div class="post-header">
-                        <span class="post-author">Запись от <a href="{{ formatId owner_id }}">{{ formatId owner_id }}</a></span>
+                        <span class="post-author">Запись от <a href="{{ urlHelper owner_id }}">{{ formatId owner_id }}</a></span>
                         <span class="post-date">{{ formatDay date }}</span>
                     </div>
                     <div class="post-text">{{ text }}</div>
                     {{#if attachments.0.photo}}
                     <img src="{{ lastSize attachments }}" class="post-img"></img>
                     {{else if attachments.0.link}}
-                    <a href="{{ attachments.0.link.url }}">{{ attachments.0.link.url }}</a>
+                    <a class="post-text post-link" href="{{ attachments.0.link.url }}">{{ attachments.0.link.url }}</a>
                     {{else if attachments.0.video}}
-                    <a href="https://vk.com/video{{ attachments.0.video.owner_id }}_{{ attachments.0.video.id }}">https://vk.com/video{{ attachments.0.video.owner_id }}_{{ attachments.0.video.id }}</a>
-                    {{else if text}}
-                    <b>{{ formatDay date }}</b>
-                    <div class="post-text">{{ text }}</div>
+                    <a class="post-text post-link" href="https://vk.com/video{{ attachments.0.video.owner_id }}_{{ attachments.0.video.id }}">
+                        https://vk.com/video{{ attachments.0.video.owner_id }}_{{ attachments.0.video.id }}
+                    </a>
+                    {{else if attachments.0.audio}}
+                    <b>{{attachments.0.audio.artist}}</b>
+                    <span>{{attachments.0.audio.title}}</span>
+                    <a class="post-link" href="{{attachments.0.audio.url}}">{{attachments.0.audio.url}}</a>
                     {{/if}}
                 </div>
                 {{/if}}

@@ -51,13 +51,24 @@ Handlebars.registerHelper('lastSize', attachments =>{
     return attachments[0].photo.sizes[size].url;
 });
 
+Handlebars.registerHelper('urlHelper', url =>{
+    if(url < 0){
+        return '#public/' + url;
+    }else{
+        return '#friends/' + url;
+    }
+});
+
 import Model from './model.js';
 import Router from './router.js';
+import Controller from './controller.js';
 
 (async() =>{
     try {
         await Model.login(51521661, 2|8192);
-
+        if(location.hash.slice(1) === ""){
+            Controller.newsRoute();
+        }
         Router.init();
     } catch (e) {
         console.error(e);

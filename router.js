@@ -19,7 +19,8 @@ function handleHash(){
 export default{
     init(){
         addEventListener('hashchange', function(){
-           handleHash();
+            window.scrollTo(scrollY, 0);
+            handleHash();
         });
         handleHash();
     }

@@ -35,5 +35,8 @@ export default{
     },
     getWall(params = {}){
         return this.callApi('wall.get', params);
+    },
+    getPublic(params = {}){
+        return this.callApi('groups.getById', params);
     }
 };
